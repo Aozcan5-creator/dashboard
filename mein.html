@@ -1,0 +1,325 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+<title>Semester-Dashboard SS 2026</title>
+<style>
+:root{--bg:#FAFAF8;--bg2:#F3F1EC;--bg3:#E8E6E1;--tx:#1C1917;--tx2:#57534E;--tx3:#A8A29E;--bd:#E7E5E4;--r:10px;
+--coral:#712B13;--coral-bg:#FAECE7;--teal:#085041;--teal-bg:#E1F5EE;--blue:#0C447C;--blue-bg:#E6F1FB;
+--purple:#3C3489;--purple-bg:#EEEDFE;--pink:#72243E;--pink-bg:#FBEAF0;--green:#27500A;--green-bg:#EAF3DE;
+--gray:#444441;--gray-bg:#F1EFE8;--amber:#633806;--amber-bg:#FAEEDA;--red:#791F1F;--red-bg:#FCEBEB}
+@media(prefers-color-scheme:dark){:root{--bg:#161614;--bg2:#222220;--bg3:#2E2E2B;--tx:#E8E5E0;--tx2:#A8A29E;--tx3:#6B6965;--bd:#2E2E2B;
+--coral:#F5C4B3;--coral-bg:#4A1B0C;--teal:#9FE1CB;--teal-bg:#04342C;--blue:#B5D4F4;--blue-bg:#042C53;
+--purple:#CECBF6;--purple-bg:#26215C;--pink:#F4C0D1;--pink-bg:#4B1528;--green:#C0DD97;--green-bg:#173404;
+--gray:#D3D1C7;--gray-bg:#2C2C2A;--amber:#FAC775;--amber-bg:#412402;--red:#F7C1C1;--red-bg:#501313}}
+*{margin:0;box-sizing:border-box}
+body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',system-ui,sans-serif;background:var(--bg);color:var(--tx);padding:1.25rem;max-width:960px;margin:0 auto;line-height:1.5;-webkit-text-size-adjust:100%}
+h1{font-size:20px;font-weight:600;margin-bottom:.15rem}
+.sub{font-size:13px;color:var(--tx3);margin-bottom:1.5rem}
+h2{font-size:12px;font-weight:600;letter-spacing:.05em;text-transform:uppercase;color:var(--tx3);margin:2rem 0 .5rem;display:flex;align-items:center;gap:8px}
+.scroll{overflow-x:auto;-webkit-overflow-scrolling:touch;margin:0 -1.25rem;padding:0 1.25rem}
+.sp{font-size:12px;width:100%;min-width:520px;border-collapse:separate;border-spacing:0;border-radius:var(--r);border:1px solid var(--tx3);overflow:hidden}
+.sp th{background:var(--bg2);color:var(--tx2);font-weight:500;font-size:11px;padding:8px 2px;text-align:center;border-bottom:1px solid var(--tx3)}
+.sp th:first-child{text-align:left;padding-left:8px;min-width:62px}
+.sp td{padding:2px;vertical-align:top;border-bottom:1px solid var(--bd);border-right:1px solid var(--bd);cursor:pointer;transition:background .1s}
+.sp td:hover{background:var(--bg2)}.sp td:first-child{padding:7px 8px;font-size:10px;font-weight:500;color:var(--tx2);white-space:nowrap;vertical-align:middle;background:var(--bg2);cursor:default;border-right:1px solid var(--tx3)}
+.sp td:first-child:hover{background:var(--bg2)}.sp tr:last-child td{border-bottom:none}.sp td:last-child{border-right:none}
+.slot{min-height:36px;display:flex;flex-direction:column;gap:2px}
+.ev{border-radius:5px;padding:3px 5px;line-height:1.2}
+.ev .n{font-weight:500;font-size:10px;display:block}.ev .m{font-size:8px;opacity:.65;display:block}
+.c-coral{background:var(--coral-bg);color:var(--coral)}.c-teal{background:var(--teal-bg);color:var(--teal)}.c-blue{background:var(--blue-bg);color:var(--blue)}.c-purple{background:var(--purple-bg);color:var(--purple)}.c-pink{background:var(--pink-bg);color:var(--pink)}.c-green{background:var(--green-bg);color:var(--green)}.c-gray{background:var(--gray-bg);color:var(--gray)}.c-amber{background:var(--amber-bg);color:var(--amber)}.c-red{background:var(--red-bg);color:var(--red)}
+.ah{min-height:36px;display:flex;align-items:center;justify-content:center}
+.ah::after{content:'+';width:22px;height:22px;border-radius:50%;border:1.5px dashed var(--bd);display:flex;align-items:center;justify-content:center;font-size:13px;color:var(--tx3);opacity:.5;transition:all .15s}
+td:hover .ah::after{opacity:1;border-color:var(--tx3);color:var(--tx2)}
+.tbl{width:100%;min-width:480px;border-collapse:separate;border-spacing:0;border-radius:var(--r);border:1px solid var(--tx3);overflow:hidden;font-size:12px}
+.tbl th{background:var(--bg2);color:var(--tx2);font-weight:500;font-size:11px;padding:7px 8px;text-align:left;border-bottom:1px solid var(--tx3);white-space:nowrap}
+.tbl td{padding:5px 8px;border-bottom:1px solid var(--bd);vertical-align:middle}.tbl tr:last-child td{border-bottom:none}
+.pill{display:inline-block;padding:1px 7px;border-radius:10px;font-size:9px;font-weight:500;white-space:nowrap}
+.sum-row td{font-weight:600;background:var(--bg2)}
+[contenteditable]{outline:none;border-radius:3px;padding:0 2px;min-width:20px;transition:background .1s}
+[contenteditable]:hover{background:var(--bg2)}[contenteditable]:focus{background:var(--bg3)}
+input[type=date]{font-family:inherit;font-size:11px;border:.5px solid var(--bd);border-radius:5px;padding:2px 6px;background:var(--bg);color:var(--tx);outline:none;max-width:140px}
+select.st{font-family:inherit;font-size:10px;border:.5px solid var(--bd);border-radius:10px;padding:2px 16px 2px 6px;background:var(--bg);color:var(--tx);outline:none;cursor:pointer;-webkit-appearance:none;appearance:none;background-image:url("data:image/svg+xml,%3Csvg width='8' height='5' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M1 1l3 3 3-3' stroke='%2378716C' fill='none' stroke-width='1.2' stroke-linecap='round'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 5px center}
+.abtn{display:inline-flex;align-items:center;gap:3px;padding:5px 12px;border-radius:8px;font-size:11px;font-weight:500;border:.5px solid var(--bd);background:var(--bg);color:var(--tx2);cursor:pointer;font-family:inherit;margin-top:6px;transition:all .12s}
+.abtn:hover{background:var(--bg2);color:var(--tx)}
+.dbtn{width:20px;height:20px;border-radius:5px;border:none;background:transparent;color:var(--tx3);cursor:pointer;font-size:13px;display:inline-flex;align-items:center;justify-content:center}
+.dbtn:hover{background:var(--red-bg);color:var(--red)}
+.col-btn{font-size:11px;padding:2px 8px;border-radius:6px;border:.5px solid var(--bd);background:var(--bg);color:var(--tx3);cursor:pointer;font-family:inherit;margin-left:auto}
+.col-btn:hover{background:var(--bg2);color:var(--tx)}
+
+/* Modal */
+.overlay{position:fixed;inset:0;background:rgba(0,0,0,.4);z-index:100;display:none;align-items:flex-end;justify-content:center}
+.overlay.open{display:flex}
+.modal{background:var(--bg);width:100%;max-width:440px;max-height:88vh;overflow-y:auto;border-radius:14px 14px 0 0;padding:1.25rem;padding-bottom:max(1.25rem,env(safe-area-inset-bottom))}
+@media(min-width:600px){.overlay{align-items:center}.modal{border-radius:12px;max-height:75vh}}
+.modal h3{font-size:15px;font-weight:600;margin-bottom:.1rem}
+.modal .mt{font-size:12px;color:var(--tx3);margin-bottom:.75rem}
+.mcur{margin-bottom:.75rem}
+.mci{display:flex;align-items:center;gap:6px;padding:3px 0}
+.mci .ev{flex:1}
+.ms{font-size:10px;color:var(--tx3);text-transform:uppercase;letter-spacing:.04em;font-weight:600;margin:10px 0 5px;display:flex;align-items:center;gap:6px}
+.ms::after{content:'';flex:1;height:.5px;background:var(--bd)}
+.mi{width:100%;font-family:inherit;font-size:13px;border:.5px solid var(--bd);border-radius:8px;padding:8px 10px;background:var(--bg);color:var(--tx);outline:none;margin-bottom:6px}
+.mi::placeholder{color:var(--tx3)}
+.mi:focus{border-color:var(--tx3)}
+select.mi{-webkit-appearance:none;appearance:none;background-image:url("data:image/svg+xml,%3Csvg width='10' height='6' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M1 1l4 4 4-4' stroke='%2378716C' fill='none' stroke-width='1.5' stroke-linecap='round'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 10px center;padding-right:28px;cursor:pointer}
+.mrow{display:flex;gap:6px}.mrow>*{flex:1}
+.mcolors{display:flex;gap:5px;margin-bottom:10px;flex-wrap:wrap}
+.cd{width:22px;height:22px;border-radius:50%;cursor:pointer;border:2px solid transparent;transition:all .1s;flex-shrink:0}
+.cd:hover{transform:scale(1.12)}.cd.sel{border-color:var(--tx);transform:scale(1.12)}
+.mb{width:100%;padding:10px;border-radius:8px;font-size:13px;font-weight:500;border:none;cursor:pointer;font-family:inherit;transition:all .12s;margin-bottom:5px}
+.mb-a{background:var(--tx);color:var(--bg)}.mb-a:hover{opacity:.85}
+.mb-c{background:var(--bg2);color:var(--tx2)}.mb-c:hover{background:var(--bg3)}
+.tog{display:flex;align-items:center;gap:6px;padding:8px 10px;border-radius:8px;border:.5px solid var(--bd);background:var(--bg);color:var(--tx);cursor:pointer;font-family:inherit;font-size:13px;font-weight:500;width:100%;text-align:left;margin-bottom:8px;transition:all .12s}
+.tog:hover{background:var(--bg2)}
+.tog .arr{margin-left:auto;font-size:10px;color:var(--tx3);transition:transform .2s}
+.tog.open .arr{transform:rotate(180deg)}
+.cform{display:none;padding:10px;border:.5px solid var(--bd);border-radius:8px;margin-bottom:10px;background:var(--bg2)}
+.cform.open{display:block}
+.cform label{font-size:10px;font-weight:500;color:var(--tx2);display:block;margin-bottom:2px;margin-top:6px}
+.cform label:first-child{margin-top:0}
+
+/* Footer */
+.foot{margin-top:2.5rem;text-align:center}
+.foot-h{font-size:13px;color:var(--tx2);margin-bottom:8px}
+.bot{display:flex;gap:8px;margin-bottom:12px}
+.bot>*{flex:1;display:flex;align-items:center;justify-content:center;gap:6px;padding:12px;border-radius:var(--r);font-size:13px;font-weight:500;cursor:pointer;font-family:inherit;text-decoration:none;transition:all .12s;border:.5px solid var(--bd)}
+.bot .xp{background:var(--bg);color:var(--tx2)}.bot .xp:hover{background:var(--bg2);color:var(--tx)}
+.bot .kofi{background:#6F4E37;color:#FFF5E6;border-color:#6F4E37;flex-direction:column;gap:1px;line-height:1.3}
+.bot .kofi:hover{background:#5C3D2E}
+.bot .kofi small{font-size:10px;opacity:.75;font-weight:400}
+.credit{font-size:11px;color:var(--tx3)}
+@media(max-width:420px){.bot{flex-direction:column}}
+</style>
+</head>
+<body>
+<div id="cap">
+<h1>Semester-Dashboard</h1>
+<div class="sub" style="display:flex;gap:4px;align-items:center;flex-wrap:wrap"><span contenteditable style="border-bottom:1px dashed var(--bd);padding:0 2px">SS 2026</span><span style="color:var(--bd)">·</span><span contenteditable style="border-bottom:1px dashed var(--bd);padding:0 2px">B.Sc. Bauingenieurwesen</span><span style="color:var(--bd)">·</span><span contenteditable style="border-bottom:1px dashed var(--bd);padding:0 2px">RWTH Aachen</span></div>
+<h2>Stundenplan <span style="font-weight:400;font-size:10px;text-transform:none;letter-spacing:0">– Zellen antippen</span></h2>
+<div class="scroll"><table class="sp"><thead><tr><th>Zeit</th><th>Mo</th><th>Di</th><th>Mi</th><th>Do</th><th>Fr</th></tr></thead><tbody id="spb"></tbody></table></div>
+<h2>Prüfungen & Deadlines</h2>
+<div class="scroll"><table class="tbl" id="ptbl"><thead id="pth"></thead><tbody id="prb"></tbody></table></div>
+<button class="abtn" onclick="addManRow()">+ Zeile</button>
+<h2>ECTS-Übersicht</h2>
+<div class="scroll"><table class="tbl"><thead><tr><th>Modul</th><th>Sem.</th><th>CP</th><th>Richtung</th></tr></thead><tbody id="mob"></tbody><tfoot><tr class="sum-row"><td>Gesamt</td><td></td><td id="cps">0</td><td></td></tr></tfoot></table></div>
+</div>
+
+<div class="foot">
+<button class="xp" onclick="doExport()" style="width:100%;display:flex;align-items:center;justify-content:center;gap:6px;padding:12px;border-radius:var(--r);font-size:13px;font-weight:500;cursor:pointer;font-family:inherit;border:.5px solid var(--bd);background:var(--bg);color:var(--tx2);margin-bottom:1.5rem">&#128247; Als Bild speichern</button>
+<div class="foot-h">Gefällt dir das Dashboard?</div>
+<a class="kofi" href="https://ko-fi.com/ahmetozcan" target="_blank" rel="noopener" style="display:flex;align-items:center;justify-content:center;flex-direction:column;gap:1px;line-height:1.3;width:100%;padding:12px;border-radius:var(--r);font-size:13px;font-weight:500;text-decoration:none;background:#6F4E37;color:#FFF5E6;border:none;margin-bottom:12px">&#9749; Unterstütze dieses Projekt<small style="font-size:10px;opacity:.75;font-weight:400">auf Ko-fi</small></a>
+<div class="credit">Ahmet Özcan · a.ozcan5@icloud.com</div>
+</div>
+
+<div class="overlay" id="ov" onclick="if(event.target===this)closeM()"><div class="modal" id="mdl"></div></div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+<script>
+const TL=['08:00–10:00','10:30–12:00','12:30–14:00','14:30–16:00','ab 16:15'],DL=['Mo','Di','Mi','Do','Fr'],COLS=['coral','teal','blue','purple','pink','green','gray','amber','red'];
+const CN={mngl:'Math. & Naturwiss.',ibgl:'Ing. Grundlagen',awp:'Allg. Wahlpflicht',ki:'Konstruktiver Ing.',ww:'Wasserwesen',bg:'Baubetrieb & Geo.',vr:'Verkehr & Raum'};
+const CC={mngl:'coral',ibgl:'teal',awp:'gray',ki:'purple',ww:'blue',bg:'green',vr:'pink'};
+const P=[ // predefined modules
+{id:'math1',n:'Mathematik I',s:1,cp:8,c:'mngl',ex:'09.09.2026',et:'14:30–17:15',co:'coral'},
+{id:'math2',n:'Mathematik II',s:2,cp:8,c:'mngl',ex:'18.09.2026',et:'14:30–17:15',co:'coral'},
+{id:'mech1',n:'Mechanik I',s:1,cp:8,c:'mngl',ex:'20.08.2026',et:'11:30–13:30',co:'coral'},
+{id:'mech2',n:'Mechanik II',s:2,cp:9,c:'mngl',ex:'06.08.2026',et:'12:00–13:30',co:'coral'},
+{id:'stat',n:'Angewandte Statistik',s:1,cp:3,c:'mngl',ex:'30.07.2026',et:'09:00–11:00',co:'coral'},
+{id:'hydro',n:'Hydromechanik',s:4,cp:6,c:'mngl',ex:'25.09.2026',et:'14:30–16:45',co:'blue'},
+{id:'ebi',n:'Einf. Bauing./Ing.wiss.',s:1,cp:2,c:'ibgl',ex:'14.08.2026',et:'12:00–13:00',co:'teal'},
+{id:'bsk1',n:'Baustoffkunde I',s:1,cp:4,c:'ibgl',ex:'01.09.2026',et:'09:00–10:30',co:'teal'},
+{id:'bsk2',n:'Baustoffkunde II',s:2,cp:3,c:'ibgl',ex:'01.09.2026',et:'14:30–16:00',co:'teal'},
+{id:'bsk3',n:'Baustoffkunde III',s:3,cp:2,c:'ibgl',ex:'31.08.2026',et:'14:30–15:30',co:'teal'},
+{id:'binf',n:'Bauinformatik',s:1,cp:3,c:'ibgl',ex:'21.09.2026',et:'',co:'teal'},
+{id:'verm',n:'Vermessungskunde',s:1,cp:3,c:'ibgl',ex:'29.09.2026',et:'15:00–17:30',co:'teal'},
+{id:'bphy',n:'Bauphysik',s:2,cp:5,c:'ibgl',ex:'27.08.2026',et:'09:00–10:30',co:'teal'},
+{id:'bkon',n:'Baukonstruktion',s:2,cp:5,c:'ibgl',ex:'31.07.2026',et:'12:00–14:00',co:'teal'},
+{id:'bst1',n:'Baustatik I',s:3,cp:5,c:'ibgl',ex:'07.08.2026',et:'11:30–13:00',co:'teal'},
+{id:'geo1',n:'Geotechnik I',s:3,cp:5,c:'ibgl',ex:'14.09.2026',et:'12:00–13:30',co:'teal'},
+{id:'plme',n:'Planungsmethodik',s:3,cp:4,c:'ibgl',ex:'28.08.2026',et:'12:00–14:00',co:'teal'},
+{id:'pvm',n:'Projekt-/Vertragsmgmt.',s:4,cp:5,c:'ibgl',ex:'26.08.2026',et:'09:00–11:00',co:'teal'},
+{id:'gwq',n:'Gewässergüte (GGSW)',s:4,cp:3,c:'ibgl',ex:'24.08.2026',et:'09:00–10:00',co:'teal'},
+{id:'dyn',n:'Dynamik',s:4,cp:4,c:'ibgl',ex:'19.08.2026',et:'12:00–13:30',co:'teal'},
+{id:'mb1',n:'Massivbau I',s:4,cp:4,c:'ibgl',ex:'27.07.2026',et:'14:30–16:45',co:'teal'},
+{id:'rm1',n:'Realisierungsmgmt. I',s:4,cp:3,c:'ibgl',ex:'03.09.2026',et:'09:00–10:30',co:'teal'},
+{id:'srp',n:'Stadt-/Regionalplanung I',s:5,cp:3,c:'ibgl',ex:'17.08.2026',et:'09:00',co:'teal'},
+{id:'fem',n:'Finite Elemente',s:5,cp:4,c:'ibgl',ex:'04.09.2026',et:'',co:'teal'},
+{id:'phys',n:'Physik',s:0,cp:3,c:'awp',ex:'18.08.2026',et:'12:00–13:00',co:'gray'},
+{id:'cgk',n:'Computerg. Konstruieren',s:0,cp:3,c:'awp',ex:'20.07.2026',et:'10:30–12:00',co:'gray'},
+{id:'brand',n:'Brandschutz d. Zukunft',s:0,cp:3,c:'awp',ex:'10.08.2026',et:'14:30–16:30',co:'gray'},
+{id:'mech3',n:'Mechanik III',s:3,cp:3,c:'awp',ex:'04.08.2026',et:'15:30–17:00',co:'gray'},
+{id:'robo',n:'Robotics',s:0,cp:3,c:'awp',ex:'',et:'',co:'red'},
+{id:'bst2',n:'Baustatik II',s:4,cp:3,c:'ki',ex:'13.08.2026',et:'11:30–13:30',co:'purple'},
+{id:'wstm',n:'Werkstoffmechanik',s:5,cp:3,c:'ki',ex:'08.09.2026',et:'14:30–15:30',co:'purple'},
+{id:'mb2',n:'Massivbau II',s:5,cp:4,c:'ki',ex:'03.08.2026',et:'14:30–16:45',co:'purple'},
+{id:'stb1',n:'Stahlbau I',s:5,cp:4,c:'ki',ex:'15.09.2026',et:'09:00–11:00',co:'purple'},
+{id:'stb2',n:'Stahlbau II',s:6,cp:4,c:'ki',ex:'24.09.2026',et:'09:00–11:00',co:'purple'},
+{id:'nhb',n:'Nachhaltigkeitsbewertung',s:5,cp:4,c:'ww',ex:'31.08.2026',et:'09:00–10:00',co:'blue'},
+{id:'wbau',n:'Wasserbau',s:5,cp:6,c:'ww',ex:'21.09.2026',et:'12:00–14:15',co:'blue'},
+{id:'wwh1',n:'Wasserwirt./Hydrol. I',s:4,cp:2,c:'ww',ex:'30.07.2026',et:'13:30',co:'blue'},
+{id:'wwh2',n:'Wasserwirt./Hydrol. II',s:5,cp:2,c:'ww',ex:'10.09.2026',et:'14:30–16:00',co:'blue'},
+{id:'geo2',n:'Geotechnik II',s:6,cp:5,c:'bg',ex:'14.09.2026',et:'14:30',co:'teal'},
+{id:'egt',n:'Energie u. Gebäudetechnik',s:6,cp:5,c:'bg',ex:'11.09.2026',et:'14:30–16:30',co:'green'},
+{id:'fels',n:'Felsmechanik u. Tunnelbau',s:5,cp:5,c:'bg',ex:'07.09.2026',et:'12:00',co:'gray'},
+{id:'rm2',n:'Realisierungsmgmt. 2',s:4,cp:3,c:'bg',ex:'',et:'',co:'amber'},
+{id:'vpl',n:'Verkehrsplanung I',s:4,cp:3,c:'vr',ex:'29.07.2026',et:'12:00–13:30',co:'pink'},
+{id:'strpl',n:'Straßenplanung/Verk.anl.',s:5,cp:3,c:'vr',ex:'21.08.2026',et:'14:30–17:00',co:'blue'},
+{id:'ebw',n:'Eisenbahnwesen',s:5,cp:6,c:'vr',ex:'02.09.2026',et:'09:00–11:00',co:'green'},
+{id:'gvw',n:'Grundl. Verkehrswirtschaft',s:6,cp:2,c:'vr',ex:'30.09.2026',et:'13:30',co:'amber'},
+];
+const PM=Object.fromEntries(P.map(m=>[m.id,m]));
+
+// State
+let cells=Array.from({length:5},()=>Array.from({length:5},()=>[]));
+let custMods=[];     // user-created modules
+let custCats=[];     // {key,name,color} user-created Richtungen
+let manRows=[],statuses={};
+let curT=0,curD=0,selCol='coral',formOpen=false;
+
+function find(id){return PM[id]||custMods.find(m=>m.id===id)}
+function allCats(){
+  const base=Object.entries(CN).map(([k,v])=>({key:k,name:v,color:CC[k]}));
+  return[...base,...custCats];
+}
+function catName(key){const ac=allCats();const f=ac.find(c=>c.key===key);return f?f.name:key}
+function catColor(key){const ac=allCats();const f=ac.find(c=>c.key===key);return f?f.color:'gray'}
+
+// Prefill
+function prefill(){
+  const a=(t,d,mid,l)=>{const m=PM[mid];cells[t][d].push({mid,name:m.n,label:l,color:m.co})};
+  a(0,1,'gwq','VU · bis 10:00');a(0,1,'mech2','VO · bis 11:00');
+  a(0,2,'strpl','VO');a(0,3,'bst2','VO/UE');
+  a(0,4,'gvw','');a(0,4,'mech2','UE');
+  a(1,0,'vpl','VU · bis 13:00');a(1,1,'bst2','UE');a(1,2,'strpl','UE · bis 11:15');
+  a(1,3,'ebw','VU');a(1,4,'fels','VO');
+  a(2,2,'geo2','VO');a(2,4,'fels','UE');
+  a(3,2,'rm2','');a(3,3,'geo2','UE');
+  a(4,0,'robo','VU · 16:30–18:00');a(4,3,'hydro','II · 16:30–18:00');a(4,3,'mech2','UE · 16:30–18:00');
+}
+prefill();
+
+function getActive(){
+  const ids=new Set();
+  cells.flat().flat().forEach(e=>{if(e.mid)ids.add(e.mid)});
+  return[...ids].map(find).filter(Boolean);
+}
+
+// ── Renders ──
+function renderSP(){
+  let h='';TL.forEach((time,t)=>{h+=`<tr><td>${time}</td>`;
+  for(let d=0;d<5;d++){const it=cells[t][d];h+=`<td onclick="openM(${t},${d})">`;
+  if(!it.length)h+=`<div class="ah"></div>`;
+  else{h+=`<div class="slot">`;it.forEach(e=>h+=`<div class="ev c-${e.color}"><span class="n">${e.name}</span>${e.label?`<span class="m">${e.label}</span>`:''}</div>`);h+=`</div>`}
+  h+=`</td>`}h+=`</tr>`});
+  document.getElementById('spb').innerHTML=h;
+}
+function deIso(d){if(!d)return'';const p=d.split('.');return p.length===3?`${p[2]}-${p[1]}-${p[0]}`:''}
+function parseDe(s){if(!s)return'9999';const p=s.split('.');return p[2]+p[1]+p[0]}
+function renderPR(){
+  let th=`<tr><th>Modul</th><th>Datum</th><th>Klausuruhrzeit</th><th>CP</th><th>Richtung</th><th>Status</th><th style="width:24px"></th></tr>`;document.getElementById('pth').innerHTML=th;
+  const act=getActive().sort((a,b)=>parseDe(a.ex)>parseDe(b.ex)?1:-1);
+  let h='';
+  act.forEach(m=>{h+=`<tr><td contenteditable>${m.n}</td><td><input type="date" value="${deIso(m.ex)}"></td><td contenteditable>${m.et||''}</td><td contenteditable>${m.cp}</td><td><span class="pill c-${catColor(m.c)}">${catName(m.c)}</span></td><td><select class="st" onchange="statuses['${m.id}']=this.value"><option${!statuses[m.id]||statuses[m.id]==='offen'?' selected':''}>offen</option><option${statuses[m.id]==='angemeldet'?' selected':''}>angemeldet</option><option${statuses[m.id]==='bestanden'?' selected':''}>bestanden</option></select></td><td></td></tr>`});
+  manRows.forEach((r,i)=>{h+=`<tr><td contenteditable>${r.name||''}</td><td><input type="date" value="${r.isoDate||''}"></td><td contenteditable>${r.et||''}</td><td contenteditable>${r.cp||''}</td><td contenteditable>${r.cat||''}</td><td><select class="st"><option>offen</option><option>angemeldet</option><option>bestanden</option></select></td><td><button class="dbtn" onclick="manRows.splice(${i},1);renderPR();renderMOD()">&times;</button></td></tr>`});
+  if(!act.length&&!manRows.length)h=`<tr><td colspan="7" style="text-align:center;color:var(--tx3);padding:16px">Kurse im Stundenplan hinzufügen</td></tr>`;
+  document.getElementById('prb').innerHTML=h;
+}
+function renderMOD(){
+  const act=getActive().sort((a,b)=>(a.s||99)-(b.s||99));
+  let h='',sum=0;
+  act.forEach(m=>{sum+=m.cp;h+=`<tr><td>${m.n}</td><td>${m.s||'–'}</td><td>${m.cp}</td><td><span class="pill c-${catColor(m.c)}">${catName(m.c)}</span></td></tr>`});
+  manRows.forEach(r=>{const cp=parseInt(r.cp)||0;sum+=cp;h+=`<tr><td>${r.name||'–'}</td><td>–</td><td>${cp||'–'}</td><td>${r.cat||'–'}</td></tr>`});
+  document.getElementById('mob').innerHTML=h||`<tr><td colspan="4" style="text-align:center;color:var(--tx3);padding:16px">–</td></tr>`;
+  document.getElementById('cps').textContent=sum;
+}
+function render(){renderSP();renderPR();renderMOD()}
+
+// ── Modal ──
+function openM(t,d){curT=t;curD=d;selCol='coral';formOpen=false;renderMdl();document.getElementById('ov').classList.add('open');document.body.style.overflow='hidden'}
+function closeM(){document.getElementById('ov').classList.remove('open');document.body.style.overflow=''}
+function togForm(){formOpen=!formOpen;renderMdl()}
+function pickC(c){selCol=c;document.querySelectorAll('.cd').forEach(d=>d.classList.remove('sel'));
+  const el=document.querySelector(`.cd[data-c="${c}"]`);if(el)el.classList.add('sel')}
+
+function renderMdl(){
+  const it=cells[curT][curD];
+  let h=`<h3>${DL[curD]} · ${TL[curT]}</h3><div class="mt">Kurse in diesem Zeitblock</div>`;
+  if(it.length){h+=`<div class="mcur">`;it.forEach((e,i)=>h+=`<div class="mci"><div class="ev c-${e.color}" style="flex:1"><span class="n">${e.name}</span>${e.label?`<span class="m">${e.label}</span>`:''}</div><button class="dbtn" onclick="rmCell(${i})">×</button></div>`);h+=`</div>`}
+  else h+=`<div style="color:var(--tx3);font-size:12px;margin-bottom:10px">Noch keine Kurse</div>`;
+
+  // Custom create toggle
+  h+=`<div class="ms">Kurs hinzufügen</div>`;
+  h+=`<button class="tog${formOpen?' open':''}" onclick="togForm()">&#10010; Eigenes Modul erstellen <span class="arr">&#9660;</span></button>`;
+  h+=`<div class="cform${formOpen?' open':''}">`;
+  h+=`<label>Name *</label><input class="mi" id="cn" placeholder="z.B. BWL Grundlagen">`;
+  h+=`<div class="mrow"><div><label>CP</label><input class="mi" id="ccp" type="number" placeholder="5"></div><div><label>SWS</label><input class="mi" id="csws" type="number" placeholder="3"></div><div><label>Semester</label><input class="mi" id="csem" type="number" placeholder="4"></div></div>`;
+  h+=`<label>Richtung</label><select class="mi" id="ccat"><option value="">– wählen –</option>`;
+  allCats().forEach(c=>h+=`<option value="${c.key}">${c.name}</option>`);
+  h+=`<option value="__new">+ Neue Richtung…</option></select>`;
+  h+=`<input class="mi" id="cncat" placeholder="Name der neuen Richtung" style="display:none">`;
+  h+=`<div class="mrow"><div><label>Klausurdatum</label><input class="mi" id="cex" type="date"></div><div><label>Uhrzeit</label><input class="mi" id="cet" placeholder="10:00–12:00"></div></div>`;
+  h+=`<label>Typ im Stundenplan</label><input class="mi" id="clab" placeholder="z.B. VO, UE, VU">`;
+  h+=`<label>Farbe</label><div class="mcolors">`;
+  COLS.forEach(c=>h+=`<div class="cd${c===selCol?' sel':''}" data-c="${c}" style="background:var(--${c}-bg)" onclick="pickC('${c}')"></div>`);
+  h+=`</div><button class="mb mb-a" onclick="doAddCust()">Erstellen & hinzufügen</button></div>`;
+
+  // Predefined select
+  h+=`<div class="ms">Oder aus Liste wählen</div>`;
+  h+=`<select class="mi" id="msel"><option value="">— Modul wählen —</option>`;
+  Object.keys(CN).forEach(cat=>{const ms=P.filter(m=>m.c===cat);h+=`<optgroup label="${CN[cat]}">`;ms.forEach(m=>h+=`<option value="${m.id}">${m.n} (${m.cp} CP)</option>`);h+=`</optgroup>`});
+  if(custMods.length){h+=`<optgroup label="Eigene Module">`;custMods.forEach(m=>h+=`<option value="${m.id}">${m.n} (${m.cp} CP)</option>`);h+=`</optgroup>`}
+  h+=`</select>`;
+  h+=`<input class="mi" id="mlab" placeholder="Typ (VO, UE, VU…)">`;
+  h+=`<button class="mb mb-a" onclick="doAddSel()">Hinzufügen</button>`;
+  h+=`<button class="mb mb-c" onclick="closeM()">Schließen</button>`;
+  document.getElementById('mdl').innerHTML=h;
+
+  // New Richtung toggle
+  const catSel=document.getElementById('ccat');
+  if(catSel)catSel.onchange=function(){document.getElementById('cncat').style.display=this.value==='__new'?'block':'none'};
+}
+
+function doAddCust(){
+  const name=document.getElementById('cn').value.trim();
+  if(!name)return;
+  const cp=parseInt(document.getElementById('ccp').value)||0;
+  const sws=parseInt(document.getElementById('csws').value)||0;
+  const sem=parseInt(document.getElementById('csem').value)||0;
+  let catKey=document.getElementById('ccat').value;
+  const newCat=document.getElementById('cncat').value.trim();
+  if(catKey==='__new'&&newCat){catKey='cust_'+newCat.toLowerCase().replace(/[^a-z0-9]/g,'');
+    if(!custCats.find(c=>c.key===catKey))custCats.push({key:catKey,name:newCat,color:selCol})}
+  const exRaw=document.getElementById('cex').value;
+  const ex=exRaw?exRaw.split('-').reverse().join('.') :'';
+  const et=document.getElementById('cet').value.trim();
+  const label=document.getElementById('clab').value.trim();
+  const id='c_'+Date.now();
+  const mod={id,n:name,s:sem,cp,sws,c:catKey||'',ex,et,co:selCol};
+  custMods.push(mod);
+  cells[curT][curD].push({mid:id,name,label,color:selCol});
+  render();renderMdl();
+}
+
+function doAddSel(){
+  const sel=document.getElementById('msel').value;if(!sel)return;
+  const m=find(sel);if(!m)return;
+  const label=document.getElementById('mlab').value.trim();
+  cells[curT][curD].push({mid:sel,name:m.n,label,color:m.co});
+  render();renderMdl();
+}
+function rmCell(i){cells[curT][curD].splice(i,1);render();renderMdl()}
+
+// Table
+function addManRow(){manRows.push({name:'',ex:'',et:'',cp:'',cat:'',isoDate:''});renderPR();renderMOD()}
+function doExport(){
+  const b=document.querySelector('.xp');b.textContent='Erstelle…';
+  if(typeof html2canvas==='undefined'){b.textContent='Screenshot nutzen';setTimeout(()=>b.innerHTML='&#128247; Als Bild speichern',3e3);return}
+  html2canvas(document.getElementById('cap'),{backgroundColor:getComputedStyle(document.body).getPropertyValue('--bg').trim()||'#FAFAF8',scale:2}).then(c=>{
+    const a=document.createElement('a');a.download='semester_dashboard.png';a.href=c.toDataURL('image/png');a.click();b.innerHTML='&#128247; Als Bild speichern';
+  }).catch(()=>{b.textContent='Fehler';setTimeout(()=>b.innerHTML='&#128247; Als Bild speichern',3e3)})
+}
+render();
+</script>
+</body>
+</html>
